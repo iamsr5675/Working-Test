@@ -8,30 +8,83 @@ import java.util.Scanner;
  */
 public class Working 
 {
-	public static void main(String[] args)
-    {
-       long st=0;
-       long sp=0;
-       long time=0;
+	static int player1 = 0, player2 = 0, position = 0, winningPosition = 10, flag = 0, counter1 = 0,
+			counter2 = 0;
 
-       Scanner sc = new Scanner(System.in);
-      System.out.println("Press 0 to start time");
-      int n = sc.nextInt();
-      if( n == 0 )
-         { 
-             st = System.currentTimeMillis();
-         }
-       System.out.println("Press 1 to stop time");
-       int m=sc.nextInt();
-       if( m == 1 )
-         { 
-             sp = System.currentTimeMillis();
-         }
-     
-       System.out.println("Time duration between start and stop");
-         time = ( sp - st ) / 1000;
-       System.out.println(time+" is seconds");
-     
+	private static void playgame() {
+		if (flag == 0) {
+			counter1++;
+			int rollDie = rollCheck();
+			System.out.println("Value at die is: " + rollDie);
+			int checkOption = options();
+			switch (checkOption) {
+			case 0:
+				System.out.println("No play");
+				flag = 1;
+				break;
+			case 1:
+				System.out.println("Ladder");
+				player1 = player1 + rollDie;
+				if (player1 > winningPosition)
+					player1 = player1 - rollDie;
+				break;
+			case 2:
+				System.out.println("Snake");
+				player1 = player1 - rollDie;
+				if (player1 < 0)
+					player1 = 0;
+				break;
+			}
+			if (counter1 == winningPosition) {
+				System.out.println("Player1 is winner");
+			}
+			position++;
 
-       }
+		} else {
+			counter2++;
+			int rollDie = rollCheck();
+			System.out.println("Value at die is: " + rollDie);
+			int checkOption = options();
+			switch (checkOption) {
+			case 0:
+				System.out.println("No play");
+				flag = 0;
+				break;
+			case 1:
+				System.out.println("Ladder");
+				player2 = player2 + rollDie;
+				if (player2 > winningPosition)
+					player2 = player2 - rollDie;
+				break;
+			case 2:
+				System.out.println("Snake");
+				player2 = player2 - rollDie;
+				if (player2 < 0)
+					player2 = 0;
+				break;
+			}
+			if (counter2 == winningPosition) {
+				System.out.println("Player2 is winner");
+			}
+			position++;
+		}
+	}
+
+	private static int rollCheck() {
+		int rollValue = (int) (Math.floor(Math.random() * 10 % 6 + 1));
+		return rollValue;
+
+	}
+
+	private static int options() {
+		int option = (int) (Math.floor(Math.random() * 10 % 3));
+		return option;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("Welcome to Snake and Ladder Game");
+		while (position != winningPosition) {
+			playgame();
+		}
+	}
 }
